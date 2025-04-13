@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -32,7 +33,7 @@ namespace StrecanskaBackend.Controllers
         [HttpGet("{id}")]
         public async Task<ActionResult<StockData>> GetStockData(int id)
         {
-            var stockData = await _context.StockDatas.FindAsync(id);
+            StockData? stockData = await _context.StockDatas.FindAsync(id);
 
             if (stockData == null)
             {
@@ -43,11 +44,12 @@ namespace StrecanskaBackend.Controllers
         }
 
 
+
         // DELETE: api/StockDatas/5
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteStockData(int id)
         {
-            var stockData = await _context.StockDatas.FindAsync(id);
+            StockData? stockData = await _context.StockDatas.FindAsync(id);
             if (stockData == null)
             {
                 return NotFound();
@@ -59,5 +61,43 @@ namespace StrecanskaBackend.Controllers
             return NoContent();
         }
 
+
+        [HttpPost("UpdateCurrentPrices")]
+        public async Task<IActionResult> UpdateCurrentPrices()
+        {
+
+            List<FavoriteTicker> favoriteTickers = await _context.FavoriteTickers.ToListAsync();
+
+            HttpClient client = new();
+
+            foreach (FavoriteTicker ticker in favoriteTickers)
+            {
+                string url = $"https://finnhub.io/api/v1/quote?symbol={ticker.Ticker}&token=" + AppDbContext.API_KEY;
+                HttpResponseMessage response = await client.GetAsync(url);
+
+                if (!response.IsSuccessStatusCode) continue;
+
+                string json = await response.Content.ReadAsStringAsync();
+                QuoteResponse? quote = JsonSerializer.Deserialize<QuoteResponse>(json, new JsonSerializerOptions
+                {
+                    PropertyNameCaseInsensitive = true
+                });
+
+                if (quote == null || quote.C == 0) continue;
+
+                StockData newStockData = new()
+                {
+                    Price = quote.C,
+                    Date = DateTime.Now,
+                    FavoriteTickers_id = ticker.Id
+                };
+
+                _context.StockDatas.Add(newStockData);
+            }
+
+            await _context.SaveChangesAsync();
+
+            return Ok("Prices updated.");
+        }
     }
 }
