@@ -42,47 +42,6 @@ namespace StrecanskaBackend.Controllers
             return stockData;
         }
 
-        // PUT: api/StockDatas/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutStockData(int id, StockData stockData)
-        {
-            if (id != stockData.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(stockData).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!StockDataExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-
-        // POST: api/StockDatas
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<StockData>> PostStockData(StockData stockData)
-        {
-            _context.StockDatas.Add(stockData);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetStockData", new { id = stockData.Id }, stockData);
-        }
 
         // DELETE: api/StockDatas/5
         [HttpDelete("{id}")]
@@ -100,9 +59,5 @@ namespace StrecanskaBackend.Controllers
             return NoContent();
         }
 
-        private bool StockDataExists(int id)
-        {
-            return _context.StockDatas.Any(e => e.Id == id);
-        }
     }
 }

@@ -42,36 +42,6 @@ namespace StrecanskaBackend.Controllers
             return favoriteTicker;
         }
 
-        // PUT: api/FavoriteTickers/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutFavoriteTicker(int id, FavoriteTicker favoriteTicker)
-        {
-            if (id != favoriteTicker.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(favoriteTicker).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!FavoriteTickerExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
 
         // POST: api/FavoriteTickers
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
@@ -98,11 +68,6 @@ namespace StrecanskaBackend.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
-        }
-
-        private bool FavoriteTickerExists(int id)
-        {
-            return _context.FavoriteTickers.Any(e => e.Id == id);
         }
     }
 }
