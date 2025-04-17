@@ -253,7 +253,7 @@ namespace StrecanskaBackend.Controllers
         [HttpPost("Rating")]
         public async Task<ActionResult<List<TickerWithRating>>> GetRatings([FromBody] List<string> tickers)
         {
-            /*if (tickers == null || !tickers.Any())
+            if (tickers == null || !tickers.Any())
                 return BadRequest("Seznam tickerů je prázdný.");
 
             var requestPayload = new
@@ -308,10 +308,10 @@ namespace StrecanskaBackend.Controllers
                 }
             }
 
-            return Ok(result);*/
+            return Ok(result);
 
 
-            if (tickers == null || !tickers.Any())
+            /*if (tickers == null || !tickers.Any())
                 return BadRequest("Seznam tickerů je prázdný.");
 
             Random random = new();
@@ -327,14 +327,14 @@ namespace StrecanskaBackend.Controllers
                 Rating = random.Next(-10, 11)
             }).ToList();
 
-            return Ok(tickerRatings);
+            return Ok(tickerRatings);*/
         }
 
 
         [HttpPost("ProcessTickers")]
         public async Task<ActionResult<List<TickerWithRecommendation>>> ProcessTickers([FromBody] List<TickerWithRating> tickers, [FromQuery] int tickerLimit)
         {
-            /*if (tickers == null || !tickers.Any())
+            /if (tickers == null || !tickers.Any())
                 return BadRequest("Seznam tickerů je prázdný.");
 
             List<TickerWithRecommendation> filteredProfiles = tickers
@@ -373,12 +373,12 @@ namespace StrecanskaBackend.Controllers
             if (!response.IsSuccessStatusCode)
                 return StatusCode((int)response.StatusCode, "Nepodařilo se odeslat doporučení.");
 
-            return Ok(filteredProfiles);*/
+            return Ok(filteredProfiles);
 
 
 
 
-            if (tickers == null || !tickers.Any())
+            /*if (tickers == null || !tickers.Any())
                 return BadRequest("Seznam tickerů je prázdný.");
 
             List<TickerWithRecommendation> filteredProfiles = tickers
@@ -392,7 +392,7 @@ namespace StrecanskaBackend.Controllers
                 .ToList();
 
 
-            return Ok(filteredProfiles);
+            return Ok(filteredProfiles);*/
         }
 
     }
