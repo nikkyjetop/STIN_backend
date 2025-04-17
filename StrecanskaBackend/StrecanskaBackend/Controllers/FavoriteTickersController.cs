@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using StrecanskaBackend.Models;
 using StrecanskaBackend.Models.Tables;
 using System.Text.Json;
