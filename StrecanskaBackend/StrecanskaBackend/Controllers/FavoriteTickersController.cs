@@ -1,8 +1,7 @@
-﻿using System.Text.Json;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
 using StrecanskaBackend.Models;
 using StrecanskaBackend.Models.Tables;
+using System.Text.Json;
 
 namespace StrecanskaBackend.Controllers
 {
@@ -334,7 +333,7 @@ namespace StrecanskaBackend.Controllers
         [HttpPost("ProcessTickers")]
         public async Task<ActionResult<List<TickerWithRecommendation>>> ProcessTickers([FromBody] List<TickerWithRating> tickers, [FromQuery] int tickerLimit)
         {
-            /*if (tickers == null || !tickers.Any())
+            if (tickers == null || !tickers.Any())
                 return BadRequest("Seznam tickerů je prázdný.");
 
             List<TickerWithRecommendation> filteredProfiles = tickers
@@ -373,7 +372,7 @@ namespace StrecanskaBackend.Controllers
             if (!response.IsSuccessStatusCode)
                 return StatusCode((int)response.StatusCode, "Nepodařilo se odeslat doporučení.");
 
-            return Ok(filteredProfiles);*
+            return Ok(filteredProfiles);
 
 
 
